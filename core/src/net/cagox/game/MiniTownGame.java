@@ -18,23 +18,25 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	TiledMapRenderer tiledMapRenderer;
+	float gameScale;
 
 	@Override
 	public void create () {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
+		gameScale = w/320;
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,w,h);
 		camera.update();
 		tiledMap = new TmxMapLoader().load("map1.tmx");
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, gameScale); //TODO: Figure out correct scale for map
 		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
@@ -48,15 +50,15 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 	}
 
 	@Override
-	public boolean keyUp(int keycode) {
+	public boolean keyUp(int keycode) {  //TODO:  Figure out how to do movement from touchDown.
 		if(keycode == Input.Keys.LEFT)
-			camera.translate(-32,0);
+			camera.translate((-32*gameScale),0);
 		if(keycode == Input.Keys.RIGHT)
-			camera.translate(32,0);
+			camera.translate((32*gameScale),0);
 		if(keycode == Input.Keys.UP)
-			camera.translate(0,-32);
+			camera.translate(0,(32*gameScale));
 		if(keycode == Input.Keys.DOWN)
-			camera.translate(0,32);
+			camera.translate(0,(-32*gameScale));
 		if(keycode == Input.Keys.NUM_1)
 			tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
 		if(keycode == Input.Keys.NUM_2)
