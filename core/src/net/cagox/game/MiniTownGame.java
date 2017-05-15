@@ -29,7 +29,7 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,w,h);
 		camera.update();
-		tiledMap = new TmxMapLoader().load("map1.tmx");
+		tiledMap = new TmxMapLoader().load("minitown.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, gameScale); //TODO: Figure out correct scale for map
 		Gdx.input.setInputProcessor(this);
 	}
@@ -63,6 +63,8 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 			tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
 		if(keycode == Input.Keys.NUM_2)
 			tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());
+		if(keycode == Input.Keys.ESCAPE)
+			Gdx.app.exit();
 		return false;
 	}
 
