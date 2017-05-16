@@ -39,8 +39,8 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,w,h);
 		camera.update();
-		tiledMap = new TmxMapLoader().load("map1.tmx");
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, gameScale);
+		tiledMap = new TmxMapLoader().load("minitown.tmx");
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, gameScale); //TODO: Figure out correct scale for map
 		Gdx.input.setInputProcessor(this);
 
 		sb = new SpriteBatch();
