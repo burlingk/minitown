@@ -8,6 +8,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -18,20 +20,35 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	TiledMapRenderer tiledMapRenderer;
+
+	SpriteBatch sb;
+	Texture texture;
+	Sprite sprite;
+
+
 	float gameScale;
+	float cellSize;
 
 	@Override
 	public void create () {
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		gameScale = w/320;
+		cellSize = gameScale*32;
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,w,h);
 		camera.update();
 		tiledMap = new TmxMapLoader().load("map1.tmx");
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, gameScale); //TODO: Figure out correct scale for map
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, gameScale);
 		Gdx.input.setInputProcessor(this);
+
+		sb = new SpriteBatch();
+		texture = new Texture(Gdx.files.internal("sprite.png"));
+		sprite = new Sprite(texture);
+		sprite.setScale(gameScale);
+
+
 	}
 
 	@Override
@@ -42,6 +59,12 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 		camera.update();
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render();
+
+
+		sb.begin();
+		sprite.draw(sb);
+		sb.end();
+
 	}
 
 	@Override
@@ -63,6 +86,8 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 			tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
 		if(keycode == Input.Keys.NUM_2)
 			tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());
+		if(keycode == Input.Keys.ESCAPE)
+			Gdx.app.exit();
 		return false;
 	}
 
