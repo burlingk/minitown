@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" nextobjectid="52">
  <tileset firstgid="1" name="things" tilewidth="32" tileheight="32" tilecount="160" columns="16">
-  <image source="../../../../../Users/Burling Family/Dropbox/Projects/tiled/townmaps/rpg_maker_vx_ace___items_by_ayene_chan-davng1k.png" width="512" height="320"/>
+  <image source="rpg_maker_vx_ace___items_by_ayene_chan-davng1k.png" width="512" height="320"/>
  </tileset>
  <tileset firstgid="161" name="magecity_0" tilewidth="32" tileheight="32" tilecount="360" columns="8">
-  <image source="../../../../../Users/Burling Family/Dropbox/Projects/tiled/townmaps/magecity_0.png" width="256" height="1450"/>
+  <image source="magecity_0.png" width="256" height="1450"/>
  </tileset>
  <tileset firstgid="521" name="The Grounds" tilewidth="32" tileheight="32" tilecount="56" columns="8">
-  <image source="../../../../../Users/Burling Family/Dropbox/Projects/tiled/townmaps/various.png" width="272" height="232"/>
+  <image source="various.png" width="272" height="232"/>
  </tileset>
  <tileset firstgid="577" name="Houses" tilewidth="32" tileheight="32" tilecount="128" columns="16">
-  <image source="../../../../../Users/Burling Family/Dropbox/Projects/tiled/townmaps/walls-n-roofs1.png" width="512" height="256"/>
+  <image source="walls-n-roofs1.png" width="512" height="256"/>
  </tileset>
  <tileset firstgid="705" name="woodfloors" tilewidth="32" tileheight="32" tilecount="64" columns="8">
-  <image source="../../../../../Users/Burling Family/Dropbox/Projects/tiled/townmaps/woodfloors.png" width="256" height="256"/>
+  <image source="woodfloors.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="769" name="materials1" tilewidth="32" tileheight="32" tilecount="48" columns="8">
-  <image source="../../../../../Users/Burling Family/Dropbox/Projects/tiled/townmaps/materials1.png" width="256" height="192"/>
+  <image source="materials1.png" width="256" height="192"/>
  </tileset>
  <tileset firstgid="817" name="windows" tilewidth="32" tileheight="32" tilecount="70" columns="5">
-  <image source="../../../../../Users/Burling Family/Dropbox/Projects/tiled/townmaps/rpg_maker_vx_ace___windows_with_curtains_by_ayene_chan-d7qrpfw.png" width="160" height="448"/>
+  <image source="rpg_maker_vx_ace___windows_with_curtains_by_ayene_chan-d7qrpfw.png" width="160" height="448"/>
  </tileset>
  <layer name="background" width="40" height="40">
   <data encoding="csv">
