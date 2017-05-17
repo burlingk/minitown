@@ -28,11 +28,12 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 
 	float gameScale;
 	float cellSize;
+	float w, h;
 
 	@Override
 	public void create () {
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+		w = Gdx.graphics.getWidth();
+		h = Gdx.graphics.getHeight();
 		gameScale = w/320;
 		cellSize = gameScale*32;
 
@@ -60,13 +61,21 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render();
 
-
-		//TODO: Sprite is disappearing if I resize the screen.
+		sprite.setX(w/2);
+		sprite.setY(w/2);
 		sb.begin();
-		sprite.setX(Gdx.graphics.getWidth()/2);
-		sprite.setY(Gdx.graphics.getHeight()/2);
 		sprite.draw(sb);
 		sb.end();
+
+	}
+
+	public void resize() {
+		w = Gdx.graphics.getWidth();
+		h = Gdx.graphics.getHeight();
+		gameScale = w/320;
+		cellSize = gameScale*32;
+
+		sprite.setScale(gameScale);
 
 	}
 
@@ -76,7 +85,7 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 	}
 
 	@Override
-	public boolean keyUp(int keycode) {
+	public boolean keyUp(int keycode) {  //TODO:  Figure out how to do movement from touchDown.
 		if(keycode == Input.Keys.LEFT)
 			camera.translate((-32*gameScale),0);
 		if(keycode == Input.Keys.RIGHT)
