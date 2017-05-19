@@ -103,7 +103,7 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 		gameScale = w/320;
 		cellSize = gameScale*32;
 
-		sprite.setScale(gameScale);
+
 
 	}
 
