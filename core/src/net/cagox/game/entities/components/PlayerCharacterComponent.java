@@ -4,9 +4,20 @@ import com.badlogic.ashley.core.Component;
 
 
 /**
- * Created by Burling Family on 5/20/2017.
+ *  A Component that identifies the Entity as a player controlled character.
+ *
+ * @author      Kenneth M. Burling (burlingk) <burlingk@cagox.net>
+ * @version     1.0
+ * @since       1.0
  */
-
 public class PlayerCharacterComponent implements Component {
+    boolean isMainCharacter;
 
+    public PlayerCharacterComponent() {
+        this.isMainCharacter = false;
+    }
+
+    public PlayerCharacterComponent(boolean isMainCharacter) {
+        this.isMainCharacter = isMainCharacter;
+    }
 }

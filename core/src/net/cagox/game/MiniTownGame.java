@@ -8,6 +8,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver.Resolution;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,6 +25,9 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
+	final float VIRTUAL_HEIGHT = 10f;
+
+	ResolutionFileResolver fileResolver;
 	Texture img;
 	TiledMap tiledMap;
 	OrthographicCamera camera;
@@ -29,35 +35,28 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 
 	SpriteBatch sb;
 	Texture texture;
-	Sprite sprite;
 
-
-	float gameScale;
-	float cellSize;
-	float w, h;
 
 	HashMap<String, Animation<TextureRegion>> pcSprite = new HashMap<String, Animation<TextureRegion>>();
 	Texture pcWalkSheet;
 	String pcWalkDirection;
 	float stateTime;
 
+	float playerX, playerY;
+
+
 	@Override
 	public void create () {
-		//w = Gdx.graphics.getWidth();
-		//h = Gdx.graphics.getHeight();
-		//gameScale = w/320;
-		//cellSize = gameScale*32;
-		w = 800;  //Virtual Width
-		h = 480;  //Virtual Height
-		gameScale  = 1;
+		fileResolver = new ResolutionFileResolver(new InternalFileHandleResolver(), new Resolution(800, 480, "480"),
+				new Resolution(1280, 720, "720"), new Resolution(1920, 1080, "1080"));
 
 
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false,w,h);
-		
+		//camera.setToOrtho(false,w,h);
 		camera.update();
+
 		tiledMap = new TmxMapLoader().load("minitown.tmx");
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, gameScale);
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1/32f);
 		Gdx.input.setInputProcessor(this);
 
 		//pcSprite ;
@@ -76,11 +75,6 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 
 		pcWalkDirection = "RIGHT";
 
-		//texture = new Texture(Gdx.files.internal("sprite.png"));
-		//sprite = new Sprite(texture);
-		//sprite.setScale(gameScale);
-
-
 	}
 
 	@Override
@@ -97,19 +91,14 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 		Animation<TextureRegion> walkAnimation = pcSprite.get(pcWalkDirection);
 		TextureRegion currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 		sb.begin();
-		sb.draw(currentFrame, w/2, h/2);
+		sb.draw(currentFrame, 32, 32);
 		sb.end();
 
 	}
 
-	public void resize() {
-		w = Gdx.graphics.getWidth();
-		h = Gdx.graphics.getHeight();
-		gameScale = w/320;
-		cellSize = gameScale*32;
-
-
-
+	public void resize (int width, int height) {
+		camera.setToOrtho(false, VIRTUAL_HEIGHT * width / (float)height, VIRTUAL_HEIGHT);
+		//sb.setProjectionMatrix(camera.combined);
 	}
 
 	@Override
@@ -121,19 +110,19 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 	public boolean keyUp(int keycode) {  //TODO:  Figure out how to do movement from touchDown.
 		if(keycode == Input.Keys.LEFT) {
 			pcWalkDirection = "LEFT";
-			camera.translate((-32*gameScale),0);
+			camera.translate(-1,0);
 		}
 		if(keycode == Input.Keys.RIGHT) {
 			pcWalkDirection = "RIGHT";
-			camera.translate((32*gameScale),0);
+			camera.translate(1,0);
 		}
 		if(keycode == Input.Keys.UP) {
 			pcWalkDirection = "UP";
-			camera.translate(0, (32 * gameScale));
+			camera.translate(0, 1);
 		}
 		if(keycode == Input.Keys.DOWN) {
 			pcWalkDirection = "DOWN";
-			camera.translate(0,(-32*gameScale));
+			camera.translate(0,-1);
 		}
 		if(keycode == Input.Keys.NUM_1)
 			tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
