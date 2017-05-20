@@ -43,13 +43,18 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public void create () {
-		w = Gdx.graphics.getWidth();
-		h = Gdx.graphics.getHeight();
-		gameScale = w/320;
-		cellSize = gameScale*32;
+		//w = Gdx.graphics.getWidth();
+		//h = Gdx.graphics.getHeight();
+		//gameScale = w/320;
+		//cellSize = gameScale*32;
+		w = 800;  //Virtual Width
+		h = 480;  //Virtual Height
+		gameScale  = 1;
+
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,w,h);
+		
 		camera.update();
 		tiledMap = new TmxMapLoader().load("minitown.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, gameScale);
