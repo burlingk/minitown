@@ -11,7 +11,7 @@ import com.badlogic.ashley.core.Component;
  * @since       1.0
  */
 public class PlayerCharacterComponent implements Component {
-    boolean isMainCharacter;
+    public boolean isMainCharacter = false;
 
     public PlayerCharacterComponent() {
         this.isMainCharacter = false;

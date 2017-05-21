@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.HashMap;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -24,17 +25,23 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
+import net.cagox.game.entities.EntityManager;
+
 public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 	final float VIRTUAL_HEIGHT = 10f;
-
 	ResolutionFileResolver fileResolver;
+
+	Engine engine = new Engine();
+	private EntityManager entityManager;
+
+	SpriteBatch sb;
+
+
+
 	Texture img;
 	TiledMap tiledMap;
 	OrthographicCamera camera;
 	TiledMapRenderer tiledMapRenderer;
-
-	SpriteBatch sb;
-	Texture texture;
 
 
 	HashMap<String, Animation<TextureRegion>> pcSprite = new HashMap<String, Animation<TextureRegion>>();
@@ -42,11 +49,16 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 	String pcWalkDirection;
 	float stateTime;
 
-	float playerX, playerY;
 
 
 	@Override
 	public void create () {
+		sb = new SpriteBatch();
+		entityManager = new EntityManager(engine, sb);
+
+
+
+
 		fileResolver = new ResolutionFileResolver(new InternalFileHandleResolver(), new Resolution(800, 480, "480"),
 				new Resolution(1280, 720, "720"), new Resolution(1920, 1080, "1080"));
 
@@ -70,7 +82,7 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 		pcSprite.put("RIGHT", new Animation<TextureRegion>(0.1f, tmp[3]));
 
 
-		sb = new SpriteBatch();
+
 		stateTime = 0f;
 
 		pcWalkDirection = "RIGHT";
@@ -90,7 +102,10 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 
 		Animation<TextureRegion> walkAnimation = pcSprite.get(pcWalkDirection);
 		TextureRegion currentFrame = walkAnimation.getKeyFrame(stateTime, true);
+
+
 		sb.begin();
+		entityManager.update();
 		sb.draw(currentFrame, 32, 32);
 		sb.end();
 

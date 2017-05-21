@@ -11,7 +11,7 @@ import com.badlogic.ashley.core.Component;
  */
 
 public class HostileMobComponent implements Component {
-    int opinionOfPlayerCharacter = -100;
+    public int opinionOfPlayerCharacter = -100;
     //TODO:  This will certainly need eventual updating.
 }
 

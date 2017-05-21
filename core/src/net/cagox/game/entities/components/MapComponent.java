@@ -13,8 +13,8 @@ import com.badlogic.ashley.core.Component;
 public class MapComponent implements Component {
     //TODO:  Eventually this will be built up to handle information for loading and unloading the maps.
 
-    String mapName;
-    String mapExtension;
+    public String mapName;
+    public String mapExtension;
 
     public String map_file_name()
     {

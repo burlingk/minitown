@@ -13,5 +13,5 @@ import com.badlogic.ashley.core.Component;
  * @since       1.0
  */
 public class BlockingComponent implements Component {
-    boolean isBlocking = true;
+    public boolean isBlocking = true;
 }

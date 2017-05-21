@@ -12,10 +12,10 @@ import com.badlogic.ashley.core.Component;
 
 public class PositionComponent implements Component {
 
-    float x;
-    float y;
-    int layer;
-    String mapName;
+    public float x;
+    public float y;
+    public int layer;
+    public String mapName;
 
     public PositionComponent() {
         this.x = 0;

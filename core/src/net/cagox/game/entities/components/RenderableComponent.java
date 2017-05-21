@@ -11,7 +11,7 @@ import com.badlogic.ashley.core.Component;
  */
 
 public class RenderableComponent implements Component {
-    boolean isRenderable = true;
+   public boolean isRenderable = true;
 
     //TODO:  Remember to flesh this out as things evolve.
 }
