@@ -23,7 +23,7 @@ public class PlayerCharacterFactory {
 
     public PlayerCharacterFactory() {}
 
-    Entity addPlayerCharacter(boolean isMainCharacter)
+    public Entity createPlayerCharacter(boolean isMainCharacter)
     {
         Entity entity = new Entity();
         entity.add(new PositionComponent());
