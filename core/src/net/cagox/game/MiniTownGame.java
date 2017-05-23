@@ -44,7 +44,7 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 	TiledMapRenderer tiledMapRenderer;
 
 
-	HashMap<String, Animation<TextureRegion>> pcSprite = new HashMap<String, Animation<TextureRegion>>();
+	HashMap<String, Animation<Sprite>> pcSprite = new HashMap<String, Animation<Sprite>>();
 	Texture pcWalkSheet;
 	String pcWalkDirection;
 	float stateTime;
@@ -75,11 +75,21 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 
 		pcWalkSheet = new Texture(Gdx.files.internal("barbarian.png"));
 		TextureRegion[][] tmp = TextureRegion.split(pcWalkSheet, 64, 64);
+		Sprite[][] tmpSprite = new Sprite[4][9];
 
-		pcSprite.put("UP", new Animation<TextureRegion>(0.1f, tmp[0]));
-		pcSprite.put("LEFT", new Animation<TextureRegion>(0.1f, tmp[1]));
-		pcSprite.put("DOWN", new Animation<TextureRegion>(0.1f, tmp[2]));
-		pcSprite.put("RIGHT", new Animation<TextureRegion>(0.1f, tmp[3]));
+		for (int x = 0; x < 4; x++) {
+			for (int y = 0; y < 9; y++) {
+				tmpSprite[x][y] = new Sprite(tmp[x][y]);
+				tmpSprite[x][y].setSize(1.8f,1.8f);
+			}
+
+		}
+
+
+		pcSprite.put("UP", new Animation<Sprite>(0.1f, tmpSprite[0]));
+		pcSprite.put("LEFT", new Animation<Sprite>(0.1f, tmpSprite[1]));
+		pcSprite.put("DOWN", new Animation<Sprite>(0.1f, tmpSprite[2]));
+		pcSprite.put("RIGHT", new Animation<Sprite>(0.1f, tmpSprite[3]));
 
 
 
@@ -100,7 +110,7 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render();
 
-		Animation<TextureRegion> walkAnimation = pcSprite.get(pcWalkDirection);
+		Animation<Sprite> walkAnimation = pcSprite.get(pcWalkDirection);
 		TextureRegion currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 
 
@@ -156,6 +166,19 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		int x, y;
+
+		int h = (int)Gdx.graphics.getHeight();
+
+		x = screenX/32;
+		y = -1*(screenY - h)/32;
+
+		System.out.print("X:");
+		System.out.print(x);
+		System.out.print(" Y:");
+		System.out.print(y);
+		System.out.print("\n");
+
 		return false;
 	}
 
@@ -178,6 +201,8 @@ public class MiniTownGame extends ApplicationAdapter implements InputProcessor {
 	public boolean scrolled(int amount) {
 		return false;
 	}
+
+
 }
 
 

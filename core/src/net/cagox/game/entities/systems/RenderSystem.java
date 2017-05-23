@@ -28,9 +28,20 @@ public class RenderSystem extends EntitySystem {
     public void addedToEngine(Engine engine) {
         entities = engine.getEntitiesFor(Family.all(PositionComponent.class, RenderableComponent.class).get());
         //TODO: Update this method once Renderables have a material component added.  Systems should map all components they use often.
+
     }
 
     public void update(float deltaTime) {
+
+
+
+
+        //Temporarily moved from the render() section of the code.
+
+
+
+
+
 
     }
 

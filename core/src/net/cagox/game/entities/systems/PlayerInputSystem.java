@@ -28,6 +28,19 @@ public class PlayerInputSystem extends EntitySystem {
 
     public void addedToEngine(Engine engine) {
         entities = engine.getEntitiesFor(Family.all(PositionComponent.class, PlayerCharacterComponent.class).get());
+
+        Entity mainCharacter;
+
+        for(Entity tmpEntity : entities ) {
+            PlayerCharacterComponent pcm = tmpEntity.getComponent(PlayerCharacterComponent.class);
+            if (pcm.isMainCharacter) {
+                mainCharacter = tmpEntity;
+                break;
+            }
+        }
+
+
+
     }
 
     public void update(float deltaTime) {
