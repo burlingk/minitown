@@ -162,8 +162,8 @@ public class RenderSystem extends EntitySystem {
         Float cameraW = camera.viewportWidth;
         Float cameraH = camera.viewportHeight;
 
-        drawX = position.x * 32;
-        drawY = position.y * 32;
+        drawX = position.x*32*scale; //position.x * 32;
+        drawY = position.y*32*scale; //position.y * 32;
 
         //camera.position.x = position.x;
         //camera.position.y = position.y;
