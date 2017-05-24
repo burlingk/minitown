@@ -180,8 +180,8 @@ public class RenderSystem extends EntitySystem {
         Float cameraW = camera.viewportWidth;
         Float cameraH = camera.viewportHeight;
 
-        drawX = (position.x) * tileStepX; //*scale; //position.x * 32;
-        drawY = (position.y) * tileStepY; //*scale; //position.y * 32;
+        drawX = (position.x) * 32;//tileStepX; //*scale; //position.x * 32;
+        drawY = (position.y) * 32;//tileStepY; //*scale; //position.y * 32;
 
         //camera.position.x = cameraW/2 + cameraPosition.x;
         //camera.position.y = cameraH/2 + cameraPosition.y;

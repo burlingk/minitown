@@ -77,8 +77,11 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
         PositionComponent position = playerCharacter.getComponent(PositionComponent.class);
 
         RenderSystem renderSys = engine.getSystem(RenderSystem.class);
-        Integer maxX = renderSys.mapWidth;
-        Integer maxY = renderSys.mapHeight;
+        Integer camMaxX = renderSys.mapWidth;
+        Integer camMaxY = renderSys.mapHeight + 4;
+        Integer pcMaxY = camMaxY+(int)(renderSys.camera.viewportHeight/2);
+        Integer pcMaxX = camMaxX+(int)(renderSys.camera.viewportWidth/2);
+
 
         CameraComponent cameraPosition = renderSys.getCameraComponent();
 
@@ -99,10 +102,10 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
             //pcWalkDirection = "RIGHT";
             //camera.translate(1,0);
             position.direction = "RIGHT";
-            if (position.x < maxX) {
+            if (position.x < pcMaxX) {
                 position.x += 1;
             }
-            if (cameraPosition.x < maxX) {
+            if (cameraPosition.x < camMaxX) {
                 cameraPosition.x += 1;
                 renderSys.camera.translate(1,0);
             }
@@ -111,10 +114,10 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
             //pcWalkDirection = "UP";
             //camera.translate(0, 1);
             position.direction = "UP";
-            if (position.y < maxY ) {
+            if (position.y < pcMaxY) {
                 position.y += 1;
             }
-            if(cameraPosition.y < maxY) {
+            if(cameraPosition.y < camMaxY) {
                 cameraPosition.y += 1;
                 renderSys.camera.translate(0,1);
             }
