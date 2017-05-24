@@ -10,6 +10,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
+import net.cagox.game.entities.components.CameraComponent;
 import net.cagox.game.entities.components.MainCharacterComponent;
 import net.cagox.game.entities.components.PlayerCharacterComponent;
 import net.cagox.game.entities.components.PositionComponent;
@@ -19,8 +20,8 @@ import net.cagox.game.entities.systems.RenderSystem;
  *  This class will be the system that handles player input.
  *
  * @author      Kenneth M. Burling (burlingk) <burlingk@cagox.net>
- * @version     1.0
- * @since       1.0
+ * @version     0.1
+ * @since       0.1
  */
 
 public class PlayerInputSystem extends EntitySystem implements InputProcessor {
@@ -79,41 +80,55 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
         Integer maxX = renderSys.mapWidth;
         Integer maxY = renderSys.mapHeight;
 
+        CameraComponent cameraPosition = renderSys.getCameraComponent();
+
 
         if(keycode == Input.Keys.LEFT) {
             //pcWalkDirection = "LEFT";
             //camera.translate(-1,0);
-            position.x -= 1;
             position.direction = "LEFT";
-            if (position.x < 0) {
-                position.x = 0;
+            if (position.x > 0) {
+                position.x -= 1;
+            }
+            if (cameraPosition.x > 0){
+                cameraPosition.x -=1;
+                renderSys.camera.translate(-1,0);
             }
         }
         if(keycode == Input.Keys.RIGHT) {
             //pcWalkDirection = "RIGHT";
             //camera.translate(1,0);
-            position.x += 1;
             position.direction = "RIGHT";
-            if (position.x >= maxX) {
-                position.x = maxX-1;
+            if (position.x < maxX) {
+                position.x += 1;
+            }
+            if (cameraPosition.x < maxX) {
+                cameraPosition.x += 1;
+                renderSys.camera.translate(1,0);
             }
         }
         if(keycode == Input.Keys.UP) {
             //pcWalkDirection = "UP";
             //camera.translate(0, 1);
-            position.y += 1;
             position.direction = "UP";
-            if (position.y >= maxY ) {
-                position.y = maxY -1;
+            if (position.y < maxY ) {
+                position.y += 1;
+            }
+            if(cameraPosition.y < maxY) {
+                cameraPosition.y += 1;
+                renderSys.camera.translate(0,1);
             }
         }
         if(keycode == Input.Keys.DOWN) {
             //pcWalkDirection = "DOWN";
            //camera.translate(0,-1);
-            position.y -= 1;
             position.direction = "DOWN";
-            if (position.y < 0) {
-                position.y = 0;
+            if (position.y > 0) {
+                position.y -= 1;
+            }
+            if (cameraPosition.y > 0 ){
+                cameraPosition.y -= 1;
+                renderSys.camera.translate(0,-1);
             }
         }
         if(keycode == Input.Keys.NUM_1)

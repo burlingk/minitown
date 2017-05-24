@@ -22,6 +22,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
+import net.cagox.game.entities.components.CameraComponent;
 import net.cagox.game.entities.components.MainCharacterComponent;
 import net.cagox.game.entities.components.PlayerCharacterComponent;
 import net.cagox.game.entities.components.PositionComponent;
@@ -50,12 +51,18 @@ public class RenderSystem extends EntitySystem {
     SpriteBatch sb;
     Texture img;
     TiledMap tiledMap;
-    OrthographicCamera camera;
+    public OrthographicCamera camera;
     TiledMapRenderer tiledMapRenderer;
     MapProperties mapProperties;
     public Integer mapHeight;  //TODO: create Setters and Getters for map height/width and set them to private.
     public Integer mapWidth;
 
+    Float cameraX;
+    Float cameraY;
+
+
+
+    MapProperties prop;
 
     HashMap<String, Animation<Sprite>> pcSprite = new HashMap<String, Animation<Sprite>>();
     Texture pcWalkSheet;
@@ -87,6 +94,10 @@ public class RenderSystem extends EntitySystem {
         mapProperties = tiledMap.getProperties();
         mapWidth = mapProperties.get("width", Integer.class);
         mapHeight = mapProperties.get("height", Integer.class);
+
+
+        prop = tiledMap.getProperties();
+
 
         //pcSprite ;
 
@@ -134,14 +145,21 @@ public class RenderSystem extends EntitySystem {
 
     public void update(float deltaTime) {
 
+        CameraComponent cameraPosition = getCameraComponent();
+
         Float drawX;
         float drawY;
+        float tileStepX = camera.viewportWidth/32f;
+        float tileStepY = camera.viewportHeight/32f;
 
         //For the moment, this just gets the PC
         ImmutableArray<Entity> tmpArray = engine.getEntitiesFor(Family.all(MainCharacterComponent.class).get());
         Entity playerCharacter = tmpArray.first();
         PositionComponent position = playerCharacter.getComponent(PositionComponent.class);
 
+
+        //Camera positioniong
+        //TODO:  Read these comments:
 
         //Temporarily moved from the render() section of the code.
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.7f, 1);
@@ -162,9 +180,11 @@ public class RenderSystem extends EntitySystem {
         Float cameraW = camera.viewportWidth;
         Float cameraH = camera.viewportHeight;
 
-        drawX = position.x*32*scale; //position.x * 32;
-        drawY = position.y*32*scale; //position.y * 32;
+        drawX = (position.x) * tileStepX; //*scale; //position.x * 32;
+        drawY = (position.y) * tileStepY; //*scale; //position.y * 32;
 
+        //camera.position.x = cameraW/2 + cameraPosition.x;
+        //camera.position.y = cameraH/2 + cameraPosition.y;
         //camera.position.x = position.x;
         //camera.position.y = position.y;
 
@@ -172,19 +192,28 @@ public class RenderSystem extends EntitySystem {
         sb.begin();
         sb.draw(currentFrame, drawX, drawY);
         sb.end();
+
+        /**
         System.out.print(camera.position.x);
         System.out.print(", ");
         System.out.print(camera.position.y);
         System.out.print("\n");
+        **/
+
+
 
     }
 
 
     public void resize(int width, int height) {
         camera.setToOrtho(false, VIRTUAL_HEIGHT * width / (float)height, VIRTUAL_HEIGHT);
+        scale = (float)Gdx.graphics.getWidth()/(float)Gdx.graphics.getHeight();
     }
 
-
+    public CameraComponent getCameraComponent(){
+        Entity tmpEntity = engine.getEntitiesFor(Family.all(CameraComponent.class).get()).first();
+        return tmpEntity.getComponent(CameraComponent.class);
+    }
 
 
 

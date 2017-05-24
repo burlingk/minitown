@@ -15,8 +15,8 @@ import net.cagox.game.entities.components.SpriteComponent;
  *  Eventually it might be refactored to work for characters in general, but for now I will keep it simple.
  *
  * @author      Kenneth M. Burling (burlingk) <burlingk@cagox.net>
- * @version     1.0
- * @since       1.0
+ * @version     0.1
+ * @since       0.1
  */
 
 

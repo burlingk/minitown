@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Gdx;
 
-import net.cagox.game.entities.components.PlayerCharacterComponent;
+import net.cagox.game.entities.factories.CameraFactory;
 import net.cagox.game.entities.factories.PlayerCharacterFactory;
 import net.cagox.game.entities.systems.PlayerInputSystem;
 import net.cagox.game.entities.systems.RenderSystem;
@@ -44,9 +44,12 @@ public class EntityManager {
         //Here we will create our Factories.
         //It is possible that these will get moved eventually.
         PlayerCharacterFactory playerCharacterFactory = new PlayerCharacterFactory();
+        CameraFactory cameraFactory = new CameraFactory();
 
         //Instantiate the Player Character
         engine.addEntity(playerCharacterFactory.createPlayerCharacter(true));
+        engine.addEntity(cameraFactory.createCameraEntity());
+
 
     }
 
