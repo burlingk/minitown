@@ -189,3 +189,5 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
         return false;
     }
 }
+
+//TODO:  I need to figure out the actual scale so that I can make the character move at the right speed. :-)
