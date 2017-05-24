@@ -3,6 +3,7 @@ package net.cagox.game.entities.factories;
 import com.badlogic.ashley.core.Entity;
 
 import net.cagox.game.entities.components.CharacterSheetComponent;
+import net.cagox.game.entities.components.MainCharacterComponent;
 import net.cagox.game.entities.components.PlayerCharacterComponent;
 import net.cagox.game.entities.components.PositionComponent;
 import net.cagox.game.entities.components.RenderableComponent;
@@ -31,6 +32,9 @@ public class PlayerCharacterFactory {
         entity.add(new CharacterSheetComponent());
         entity.add(new RenderableComponent());
         entity.add(new SpriteComponent());
+        if (isMainCharacter) {
+            entity.add(new MainCharacterComponent());
+        }
 
         return entity;
 

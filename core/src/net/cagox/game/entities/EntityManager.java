@@ -27,14 +27,17 @@ import net.cagox.game.entities.systems.RenderSystem;
 
 public class EntityManager {
     private Engine engine;
+    PlayerInputSystem playerInput;
+    RenderSystem renderSystem;
 
-    public EntityManager(Engine e, SpriteBatch batch) {
+    //public EntityManager(Engine e, SpriteBatch batch) {
+    public EntityManager(Engine e) {
         this.engine = e;
 
         //Here we will add our systems.
-        PlayerInputSystem playerInput = new PlayerInputSystem();
+        playerInput = new PlayerInputSystem();
         engine.addSystem(playerInput);
-        RenderSystem renderSystem = new RenderSystem();
+        renderSystem = new RenderSystem();
         engine.addSystem(renderSystem);
 
 
@@ -52,4 +55,7 @@ public class EntityManager {
         engine.update(Gdx.graphics.getDeltaTime());
     }
 
+    public void resize(int width, int height) {
+        renderSystem.resize(width, height);
+    }
 }

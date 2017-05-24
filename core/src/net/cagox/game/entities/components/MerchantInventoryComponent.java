@@ -8,8 +8,8 @@ import com.badlogic.ashley.core.Component;
  *  This component will also contain a list of items that the merchant has for sell.
  *
  * @author      Kenneth M. Burling (burlingk) <burlingk@cagox.net>
- * @version     1.0
- * @since       1.0
+ * @version     0.1
+ * @since       0.1
  */
 public class MerchantInventoryComponent implements Component {
     //For the moment, this is a stub.  It will need to be

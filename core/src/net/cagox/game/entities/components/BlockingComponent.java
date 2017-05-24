@@ -9,8 +9,8 @@ import com.badlogic.ashley.core.Component;
  * added to NPCs and the like.
  *
  * @author      Kenneth M. Burling (burlingk) <burlingk@cagox.net>
- * @version     1.0
- * @since       1.0
+ * @version     0.1
+ * @since       0.1
  */
 public class BlockingComponent implements Component {
     public boolean isBlocking = true;
