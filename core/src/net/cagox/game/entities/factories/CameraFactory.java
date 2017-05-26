@@ -1,6 +1,7 @@
 package net.cagox.game.entities.factories;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import net.cagox.game.entities.components.CameraComponent;
 
@@ -21,6 +22,12 @@ public class CameraFactory {
     public Entity createCameraEntity() {
         Entity entity = new Entity();
         entity.add(new CameraComponent());
+        return entity;
+    }
+
+    public Entity createCameraEntity(OrthographicCamera camera) {
+        Entity entity = new Entity();
+        entity.add(new CameraComponent(camera));
         return entity;
     }
 

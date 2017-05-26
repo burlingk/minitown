@@ -9,12 +9,15 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Camera;
 
+import net.cagox.game.entities.EntityManager;
 import net.cagox.game.entities.components.CameraComponent;
 import net.cagox.game.entities.components.MainCharacterComponent;
 import net.cagox.game.entities.components.PlayerCharacterComponent;
 import net.cagox.game.entities.components.PositionComponent;
 import net.cagox.game.entities.systems.RenderSystem;
+import net.cagox.game.entities.systems.helpers.MovementFlags;
 
 /**
  *  This class will be the system that handles player input.
@@ -32,94 +35,127 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
     private ComponentMapper<MainCharacterComponent> mcm;
 
     private Engine engine;
+    private  EntityManager entityManager;
 
-    public PlayerInputSystem() {
+    private MovementFlags Moving = new MovementFlags();
+
+
+    public PlayerInputSystem(EntityManager entityManager) {
         Gdx.input.setInputProcessor(this);
-
+        this.entityManager = entityManager;
         pm = ComponentMapper.getFor(PositionComponent.class);
         pcm = ComponentMapper.getFor(PlayerCharacterComponent.class);
         mcm = ComponentMapper.getFor(MainCharacterComponent.class);
-
     }
+
+
 
     public void addedToEngine(Engine engine) {
         this.engine = engine;
-        entities = engine.getEntitiesFor(Family.all(PositionComponent.class, PlayerCharacterComponent.class).get());
-
-        Entity mainCharacter;
-
-        for(Entity tmpEntity : entities ) {
-            PlayerCharacterComponent pcm = tmpEntity.getComponent(PlayerCharacterComponent.class);
-            if (pcm.isMainCharacter) {
-                mainCharacter = tmpEntity;
-                break;
-            }
-        }
-
-
-
+        //entities = engine.getEntitiesFor(Family.all(PositionComponent.class, PlayerCharacterComponent.class).get());
     }
 
     public void update(float deltaTime) {
+        Entity playerCharacter = engine.getEntitiesFor(Family.all(MainCharacterComponent.class).get()).first();
+        Entity cameraEntity = engine.getEntitiesFor(Family.all(CameraComponent.class).get()).first();
+        PositionComponent playerPosition = playerCharacter.getComponent(PositionComponent.class);
+        CameraComponent cameraComponent = cameraEntity.getComponent(CameraComponent.class);
+
+        float speed = 3;
+
+        //New Movement Code Bellow
+        if (Moving.RIGHT) {
+            playerPosition.x += speed * deltaTime * entityManager.getRenderSystem().getTileW();
+            cameraComponent.camera.translate((speed * deltaTime), 0);
+
+        }
+        if (Moving.LEFT) {
+            playerPosition.x -= speed * deltaTime * entityManager.getRenderSystem().getTileW();
+            cameraComponent.camera.translate(-(speed * deltaTime), 0);
+        }
+        if (Moving.UP) {
+            playerPosition.y += speed * deltaTime * entityManager.getRenderSystem().getTileH();
+            cameraComponent.camera.translate(0, (speed * deltaTime));
+        }
+        if (Moving.DOWN) {
+            playerPosition.y -= speed * deltaTime * entityManager.getRenderSystem().getTileH();
+            cameraComponent.camera.translate(0, -(speed * deltaTime));
+        }
 
     }
 
     @Override
-    public boolean keyDown(int keycode) {
+    public boolean keyUp(int keycode) {
+
+        if(keycode == Input.Keys.LEFT) {
+            Moving.LEFT = false;
+        }
+
+        if(keycode == Input.Keys.RIGHT) {
+            Moving.RIGHT = false;
+        }
+
+        if(keycode == Input.Keys.UP) {
+            Moving.UP = false;
+        }
+
+        if(keycode == Input.Keys.DOWN) {
+            Moving.DOWN = false;
+        }
+
         return false;
     }
 
     @Override
-    public boolean keyUp(int keycode) {  //TODO:  Figure out how to do movement from touchDown.
-        ImmutableArray<Entity> tmpArray = engine.getEntitiesFor(Family.all(MainCharacterComponent.class).get());
-        Entity playerCharacter = tmpArray.first();
-
+    public boolean keyDown(int keycode) {  //TODO:  Figure out how to do movement from touchDown.
+        Entity playerCharacter = engine.getEntitiesFor(Family.all(MainCharacterComponent.class).get()).first();
         PositionComponent position = playerCharacter.getComponent(PositionComponent.class);
 
         RenderSystem renderSys = engine.getSystem(RenderSystem.class);
-        Integer camMaxX = renderSys.mapWidth;
-        Integer camMaxY = renderSys.mapHeight + 4;
-        Integer pcMaxY = camMaxY+(int)(renderSys.camera.viewportHeight/2);
-        Integer pcMaxX = camMaxX+(int)(renderSys.camera.viewportWidth/2);
+        Integer camMaxX = renderSys.mapWidth;  // - (int)renderSys.camera.viewportWidth/2;
+        Integer camMaxY = renderSys.mapHeight; // - (int)renderSys.camera.viewportHeight/2;
+        Integer pcMaxY = renderSys.mapWidth;   //+(int)(renderSys.camera.viewportHeight/2);
+        Integer pcMaxX = renderSys.mapHeight; //+(int)(renderSys.camera.viewportWidth/2);
 
 
         CameraComponent cameraPosition = renderSys.getCameraComponent();
 
 
+        //TODO fix camera positioning code after testing.
         if(keycode == Input.Keys.LEFT) {
             //pcWalkDirection = "LEFT";
             //camera.translate(-1,0);
             position.direction = "LEFT";
             if (position.x > 0) {
-                position.x -= 1;
+                Moving.LEFT = true;
             }
-            if (cameraPosition.x > 0){
-                cameraPosition.x -=1;
-                renderSys.camera.translate(-1,0);
+            else {
+                Moving.LEFT = false;
+                position.x = 0;
             }
         }
         if(keycode == Input.Keys.RIGHT) {
             //pcWalkDirection = "RIGHT";
             //camera.translate(1,0);
             position.direction = "RIGHT";
-            if (position.x < pcMaxX) {
-                position.x += 1;
+            if (position.x < pcMaxX-1) {
+                Moving.RIGHT = true;
             }
-            if (cameraPosition.x < camMaxX) {
-                cameraPosition.x += 1;
-                renderSys.camera.translate(1,0);
+            else {
+                Moving.RIGHT = false;
+                position.x = pcMaxX-1;
             }
         }
         if(keycode == Input.Keys.UP) {
             //pcWalkDirection = "UP";
             //camera.translate(0, 1);
             position.direction = "UP";
-            if (position.y < pcMaxY) {
-                position.y += 1;
+            if (position.y < pcMaxY-1) {
+                Moving.UP = true;
             }
-            if(cameraPosition.y < camMaxY) {
-                cameraPosition.y += 1;
-                renderSys.camera.translate(0,1);
+            else {
+                Moving.UP = false;
+                position.y = pcMaxY-1;
             }
         }
         if(keycode == Input.Keys.DOWN) {
@@ -127,11 +163,11 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
            //camera.translate(0,-1);
             position.direction = "DOWN";
             if (position.y > 0) {
-                position.y -= 1;
+                Moving.DOWN = true;
             }
-            if (cameraPosition.y > 0 ){
-                cameraPosition.y -= 1;
-                renderSys.camera.translate(0,-1);
+            else {
+                Moving.DOWN = false;
+                position.y = 0;
             }
         }
         if(keycode == Input.Keys.NUM_1)

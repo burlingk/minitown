@@ -1,6 +1,7 @@
 package net.cagox.game.entities;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Gdx;
 
@@ -27,28 +28,20 @@ import net.cagox.game.entities.systems.RenderSystem;
 
 public class EntityManager {
     private Engine engine;
-    PlayerInputSystem playerInput;
-    RenderSystem renderSystem;
+    private PlayerInputSystem playerInput;
+    private RenderSystem renderSystem;
+    public CameraFactory cameraFactory;
+    public PlayerCharacterFactory playerCharacterFactory;
 
-    //public EntityManager(Engine e, SpriteBatch batch) {
+
+
+
     public EntityManager(Engine e) {
         this.engine = e;
 
-        //Here we will add our systems.
-        playerInput = new PlayerInputSystem();
-        engine.addSystem(playerInput);
-        renderSystem = new RenderSystem();
-        engine.addSystem(renderSystem);
-
-
-        //Here we will create our Factories.
-        //It is possible that these will get moved eventually.
-        PlayerCharacterFactory playerCharacterFactory = new PlayerCharacterFactory();
-        CameraFactory cameraFactory = new CameraFactory();
-
-        //Instantiate the Player Character
-        engine.addEntity(playerCharacterFactory.createPlayerCharacter(true));
-        engine.addEntity(cameraFactory.createCameraEntity());
+        setUpFactories();
+        setUpSystems();
+        addInitialEntities();
 
 
     }
@@ -61,4 +54,39 @@ public class EntityManager {
     public void resize(int width, int height) {
         renderSystem.resize(width, height);
     }
+
+    private void setUpSystems() {
+        //Here we will add our systems.
+        playerInput = new PlayerInputSystem(this);
+        engine.addSystem(playerInput);
+        renderSystem = new RenderSystem(this);
+        engine.addSystem(renderSystem);
+
+    }
+
+    private void setUpFactories() {
+        //Here we will create our Factories.
+        //It is possible that these will get moved eventually.
+        playerCharacterFactory = new PlayerCharacterFactory();
+        cameraFactory = new CameraFactory();
+    }
+
+    public void addInitialEntities() {
+        //Instantiate the Player Character
+        engine.addEntity(playerCharacterFactory.createPlayerCharacter(true));
+
+    }
+
+    public RenderSystem getRenderSystem() {
+        return renderSystem;
+    }
+
+    public PlayerCharacterFactory getPlayerCharacterFactory() {
+        return playerCharacterFactory;
+    }
+
+    public CameraFactory getCameraFactory() {
+        return cameraFactory;
+    }
+
 }
