@@ -4,6 +4,8 @@ import com.badlogic.ashley.core.Component;
 
 /**
  *  A Component that gives an entity a sprite.
+ *  <p>
+ *  This component will hold the various data pertaining to the sprite and animation.
  *
  * @author      Kenneth M. Burling (burlingk) <burlingk@cagox.net>
  * @version     0.1
