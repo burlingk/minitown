@@ -1,0 +1,6 @@
+net.cagox.game
+net.cagox.game.entities
+net.cagox.game.entities.components
+net.cagox.game.entities.factories
+net.cagox.game.entities.systems
+net.cagox.game.entities.systems.helpers

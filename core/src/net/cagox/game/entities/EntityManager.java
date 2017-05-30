@@ -1,12 +1,10 @@
 package net.cagox.game.entities;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Gdx;
 
 import net.cagox.game.entities.factories.CameraFactory;
-import net.cagox.game.entities.factories.PlayerCharacterFactory;
+import net.cagox.game.entities.factories.CharacterFactory;
 import net.cagox.game.entities.systems.PlayerInputSystem;
 import net.cagox.game.entities.systems.RenderSystem;
 
@@ -31,7 +29,7 @@ public class EntityManager {
     private PlayerInputSystem playerInput;
     private RenderSystem renderSystem;
     public CameraFactory cameraFactory;
-    public PlayerCharacterFactory playerCharacterFactory;
+    public CharacterFactory characterFactory;
 
 
 
@@ -40,11 +38,10 @@ public class EntityManager {
         this.engine = e;
 
         setUpFactories();
-        setUpSystems();
         addInitialEntities();
+        setUpSystems();
 
-
-    }
+        }
 
 
     public void update() {
@@ -67,13 +64,13 @@ public class EntityManager {
     private void setUpFactories() {
         //Here we will create our Factories.
         //It is possible that these will get moved eventually.
-        playerCharacterFactory = new PlayerCharacterFactory();
+        characterFactory = new CharacterFactory();
         cameraFactory = new CameraFactory();
     }
 
     public void addInitialEntities() {
-        //Instantiate the Player Character
-        engine.addEntity(playerCharacterFactory.createPlayerCharacter(true));
+        //Instantiate the main Player Character
+        engine.addEntity(characterFactory.createPlayerCharacter(true, "barbarian.png", 64, 64, 0.1f));
 
     }
 
@@ -81,8 +78,8 @@ public class EntityManager {
         return renderSystem;
     }
 
-    public PlayerCharacterFactory getPlayerCharacterFactory() {
-        return playerCharacterFactory;
+    public CharacterFactory getCharacterFactory() {
+        return characterFactory;
     }
 
     public CameraFactory getCameraFactory() {

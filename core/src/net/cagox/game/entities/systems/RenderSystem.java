@@ -28,6 +28,7 @@ import net.cagox.game.entities.components.MainCharacterComponent;
 import net.cagox.game.entities.components.PlayerCharacterComponent;
 import net.cagox.game.entities.components.PositionComponent;
 import net.cagox.game.entities.components.RenderableComponent;
+import net.cagox.game.entities.components.SpriteComponent;
 
 import java.util.HashMap;
 
@@ -59,10 +60,6 @@ public class RenderSystem extends EntitySystem {
 
     private Float tileH, tileW;
     private Float ratio;
-
-
-
-
 
     HashMap<String, Animation<Sprite>> pcSprite = new HashMap<String, Animation<Sprite>>();
     Texture pcWalkSheet;
@@ -155,28 +152,15 @@ public class RenderSystem extends EntitySystem {
         mapHeight = mapProperties.get("height", Integer.class);
     }
 
-    void spriteSetup(){
+    void spriteSetup() {
+        Entity tmpEntity = engine.getEntitiesFor(Family.all(MainCharacterComponent.class).get()).first();
 
+        SpriteComponent mainCharacterSpriteComponent = tmpEntity.getComponent(SpriteComponent.class);
 
         sb = new SpriteBatch();
         //pcSprite ;
-        pcWalkSheet = new Texture(Gdx.files.internal("barbarian.png"));
-        TextureRegion[][] tmp = TextureRegion.split(pcWalkSheet, 64, 64);
-        Sprite[][] tmpSprite = new Sprite[4][9];
+        pcSprite = mainCharacterSpriteComponent.getSprite();
 
-        for (int x = 0; x < 4; x++) {
-            for (int y = 0; y < 9; y++) {
-                tmpSprite[x][y] = new Sprite(tmp[x][y]);
-                tmpSprite[x][y].setSize(1.8f,1.8f);
-            }
-
-        }
-        pcSprite.put("UP", new Animation<Sprite>(0.1f, tmpSprite[0]));
-        pcSprite.put("LEFT", new Animation<Sprite>(0.1f, tmpSprite[1]));
-        pcSprite.put("DOWN", new Animation<Sprite>(0.1f, tmpSprite[2]));
-        pcSprite.put("RIGHT", new Animation<Sprite>(0.1f, tmpSprite[3]));
-        stateTime = 0f;
-        pcWalkDirection = "RIGHT";
     }
 
 
