@@ -34,6 +34,14 @@ public class SpriteComponent implements Component {
     }
 
 
+    /**
+     * Creates a sprite component using the given parameters.
+     *
+     * @param filename        The image file containing the frames for the sprite.
+     * @param spriteWidth     The pixel width of a frame.
+     * @param spriteHeight    The pixel height of a frame.
+     * @param frameDuration   The frame duration for the animation.
+     */
     public SpriteComponent(String filename, int spriteWidth, int spriteHeight, float frameDuration) {
 
         isAnimated = true;

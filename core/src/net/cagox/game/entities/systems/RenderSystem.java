@@ -50,7 +50,6 @@ public class RenderSystem extends EntitySystem {
     private EntityManager entityManager;
 
     SpriteBatch sb;
-    Texture img;
     TiledMap tiledMap;
     public OrthographicCamera camera;
     TiledMapRenderer tiledMapRenderer;
@@ -59,11 +58,9 @@ public class RenderSystem extends EntitySystem {
     public Integer mapWidth;
 
     private Float tileH, tileW;
-    private Float ratio;
 
-    HashMap<String, Animation<Sprite>> pcSprite = new HashMap<String, Animation<Sprite>>();
-    Texture pcWalkSheet;
-    String pcWalkDirection;
+    //HashMap<String, Animation<Sprite>> pcSprite = new HashMap<String, Animation<Sprite>>();
+    SpriteComponent mainCharacterSpriteComponent;
     float stateTime=0;
 
     final float VIRTUAL_HEIGHT = 10f;
@@ -116,11 +113,11 @@ public class RenderSystem extends EntitySystem {
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
 
-        Animation<Sprite> walkAnimation = pcSprite.get(position.direction);
+        Animation<Sprite> walkAnimation = mainCharacterSpriteComponent.getSprite().get(position.direction);
         TextureRegion currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 
         //TODO: write propper code to track camera position in the world in relation to the main character and constrain it to the map.
-        //sb.setProjectionMatrix(camera.combined);
+
         sb.begin();
         sb.draw(currentFrame, centerX*getTileW(), centerY*getTileH());
         sb.end();
@@ -132,7 +129,7 @@ public class RenderSystem extends EntitySystem {
         camera.setToOrtho(false, 10, 10);
         tileW = (float)Gdx.graphics.getWidth()/10;
         tileH = (float)Gdx.graphics.getHeight()/10;
-        ratio = tileW/tileH;
+
 
     }
 
@@ -154,20 +151,14 @@ public class RenderSystem extends EntitySystem {
 
     void spriteSetup() {
         Entity tmpEntity = engine.getEntitiesFor(Family.all(MainCharacterComponent.class).get()).first();
-
-        SpriteComponent mainCharacterSpriteComponent = tmpEntity.getComponent(SpriteComponent.class);
-
+        mainCharacterSpriteComponent = tmpEntity.getComponent(SpriteComponent.class);
         sb = new SpriteBatch();
-        //pcSprite ;
-        pcSprite = mainCharacterSpriteComponent.getSprite();
-
     }
 
 
     void cameraSetup() {
         fileResolver = new ResolutionFileResolver(new InternalFileHandleResolver(), new ResolutionFileResolver.Resolution(800, 480, "480"),
                 new ResolutionFileResolver.Resolution(1280, 720, "720"), new ResolutionFileResolver.Resolution(1920, 1080, "1080"));
-        //scale = (float)Gdx.graphics.getWidth()/(float)Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera(10, 10);
         camera.setToOrtho(false,10,10);
@@ -176,7 +167,7 @@ public class RenderSystem extends EntitySystem {
 
         tileH = (float)Gdx.graphics.getWidth()/32;
         tileW = (float)Gdx.graphics.getHeight()/32;
-        ratio = tileW/tileH;
+
     }
 
     public float getTileH(){

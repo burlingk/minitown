@@ -1,7 +1,7 @@
 package net.cagox.game.entities.systems.helpers;
 
 /**
- * Created by Burling Family on 5/25/2017.
+ * Created by burlingk on 5/25/2017.
  */
 
 public class MovementFlags {
