@@ -36,6 +36,9 @@ public class SpriteComponent implements Component {
 
     public SpriteComponent(String filename, int spriteWidth, int spriteHeight, float frameDuration) {
 
+        isAnimated = true;
+        isDirectional = true;
+
         Texture walkSheet = new Texture(Gdx.files.internal(filename));
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, spriteWidth, spriteHeight);
         int h = walkSheet.getHeight()/spriteHeight;
