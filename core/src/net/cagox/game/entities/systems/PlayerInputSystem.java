@@ -226,4 +226,4 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
     }
 }
 
-//TODO:  I need to figure out the actual scale so that I can make the character move at the right speed. :-)
+//TODO:  Movement is a little broken.  It is currently set to detect if the key is up or down and move accordingly.  It doesn't consistently do so.
