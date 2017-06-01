@@ -16,6 +16,7 @@ import net.cagox.game.entities.components.CameraComponent;
 import net.cagox.game.entities.components.MainCharacterComponent;
 import net.cagox.game.entities.components.PlayerCharacterComponent;
 import net.cagox.game.entities.components.PositionComponent;
+import net.cagox.game.entities.components.TouchpadComponent;
 import net.cagox.game.entities.systems.RenderSystem;
 import net.cagox.game.entities.systems.helpers.MovementFlags;
 
@@ -39,6 +40,8 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
 
     private MovementFlags Moving = new MovementFlags();
 
+    private TouchpadComponent touchpadComponent;
+
 
     public PlayerInputSystem(EntityManager entityManager) {
         Gdx.input.setInputProcessor(this);
@@ -52,7 +55,7 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
 
     public void addedToEngine(Engine engine) {
         this.engine = engine;
-        //entities = engine.getEntitiesFor(Family.all(PositionComponent.class, PlayerCharacterComponent.class).get());
+        touchpadComponent = getTouchpadComponent();
     }
 
     public void update(float deltaTime) {
@@ -81,6 +84,18 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
             playerPosition.y -= speed * deltaTime * entityManager.getRenderSystem().getTileH();
             cameraComponent.camera.translate(0, -(speed * deltaTime));
         }
+
+        float x, y;
+        x = touchpadComponent.touchpad.getKnobPercentX();
+        y = touchpadComponent.touchpad.getKnobPercentY();
+
+        System.out.print("Knob X: ");
+        System.out.print(x);
+        System.out.print(", Knob Y: ");
+        System.out.print(y);
+        System.out.print("\n");
+
+
 
     }
 
@@ -189,6 +204,7 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        /*
         int x, y;
 
         int h = (int)Gdx.graphics.getHeight();
@@ -201,7 +217,7 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
         System.out.print(" Y:");
         System.out.print(y);
         System.out.print("\n");
-
+        */
         return false;
     }
 
@@ -224,6 +240,17 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
+
+
+    //helpers
+    TouchpadComponent getTouchpadComponent() {
+        Entity tmpTpEntity = engine.getEntitiesFor(Family.all(TouchpadComponent.class).get()).first();
+        return tmpTpEntity.getComponent(TouchpadComponent.class);
+    }
+
+
+
 }
 
 //TODO:  Movement is a little broken.  It is currently set to detect if the key is up or down and move accordingly.  It doesn't consistently do so.

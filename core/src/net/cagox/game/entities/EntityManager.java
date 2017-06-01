@@ -1,8 +1,10 @@
 package net.cagox.game.entities;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 
+import net.cagox.game.entities.components.TouchpadComponent;
 import net.cagox.game.entities.factories.CameraFactory;
 import net.cagox.game.entities.factories.CharacterFactory;
 import net.cagox.game.entities.systems.PlayerInputSystem;
@@ -71,6 +73,7 @@ public class EntityManager {
     public void addInitialEntities() {
         //Instantiate the main Player Character
         engine.addEntity(characterFactory.createPlayerCharacter(true, "barbarian.png", 64, 64, 0.1f));
+        engine.addEntity(getTouchpadEntity());
 
     }
 
@@ -86,4 +89,9 @@ public class EntityManager {
         return cameraFactory;
     }
 
+    private Entity getTouchpadEntity() {
+        Entity entity = new Entity();
+        entity.add(new TouchpadComponent());
+        return entity;
+    }
 }

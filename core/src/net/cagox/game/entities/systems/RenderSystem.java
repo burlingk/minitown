@@ -11,7 +11,6 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,16 +20,15 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 
+import net.cagox.game.entities.components.TouchpadComponent;
 import net.cagox.game.entities.EntityManager;
 import net.cagox.game.entities.components.CameraComponent;
 import net.cagox.game.entities.components.MainCharacterComponent;
-import net.cagox.game.entities.components.PlayerCharacterComponent;
 import net.cagox.game.entities.components.PositionComponent;
 import net.cagox.game.entities.components.RenderableComponent;
 import net.cagox.game.entities.components.SpriteComponent;
-
-import java.util.HashMap;
 
 /**
  *  This class will be the system that handles rendering of graphics.
@@ -66,6 +64,8 @@ public class RenderSystem extends EntitySystem {
     final float VIRTUAL_HEIGHT = 10f;
     ResolutionFileResolver fileResolver;
 
+    private TouchpadComponent touchpadComponent;
+
 
 
     public RenderSystem() {
@@ -86,6 +86,8 @@ public class RenderSystem extends EntitySystem {
         cameraSetup();
         mapSetup();
         spriteSetup();
+
+
     }
 
     public void update(float deltaTime) {
@@ -120,15 +122,18 @@ public class RenderSystem extends EntitySystem {
 
         sb.begin();
         sb.draw(currentFrame, centerX*getTileW(), centerY*getTileH());
+        touchpadComponent.touchpad.draw(sb, 0.5f);
         sb.end();
     }
 
 
     public void resize(int width, int height) {
         //camera.setToOrtho(false, VIRTUAL_HEIGHT * width / (float)height, VIRTUAL_HEIGHT);
-        camera.setToOrtho(false, 10, 10);
+        float aspectRatio = (float) Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
+        camera.setToOrtho(false, 10*aspectRatio, 10);
         tileW = (float)Gdx.graphics.getWidth()/10;
-        tileH = (float)Gdx.graphics.getHeight()/10;
+        tileH = (float)Gdx.graphics.getHeight()/10*aspectRatio;
+        touchpadComponent.touchpad.setBounds(Gdx.graphics.getWidth()-138, 32*aspectRatio, 128, 128);
 
 
     }
@@ -160,13 +165,18 @@ public class RenderSystem extends EntitySystem {
         fileResolver = new ResolutionFileResolver(new InternalFileHandleResolver(), new ResolutionFileResolver.Resolution(800, 480, "480"),
                 new ResolutionFileResolver.Resolution(1280, 720, "720"), new ResolutionFileResolver.Resolution(1920, 1080, "1080"));
 
-        camera = new OrthographicCamera(10, 10);
+        float aspectRatio = (float) Gdx.graphics.getWidth() / (float) Gdx.graphics.getHeight();
+
+        camera = new OrthographicCamera(10*aspectRatio, 10);
         camera.setToOrtho(false,10,10);
         engine.addEntity(entityManager.cameraFactory.createCameraEntity(camera));
         camera.update();
 
-        tileH = (float)Gdx.graphics.getWidth()/32;
+        tileH = (float)Gdx.graphics.getWidth()/32*aspectRatio;
         tileW = (float)Gdx.graphics.getHeight()/32;
+
+        touchpadComponent = getTouchpadComponent();
+        touchpadComponent.touchpad.setBounds(Gdx.graphics.getWidth()-138, 32*aspectRatio, 128, 128);
 
     }
 
@@ -177,4 +187,11 @@ public class RenderSystem extends EntitySystem {
     public float getTileW(){
         return tileW;
     }
+
+    TouchpadComponent getTouchpadComponent() {
+        Entity tmpTpEntity = engine.getEntitiesFor(Family.all(TouchpadComponent.class).get()).first();
+        return tmpTpEntity.getComponent(TouchpadComponent.class);
+    }
+
+
 }
