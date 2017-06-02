@@ -57,6 +57,8 @@ public class RenderSystem extends EntitySystem {
 
     private Float tileH, tileW;
 
+
+
     //HashMap<String, Animation<Sprite>> pcSprite = new HashMap<String, Animation<Sprite>>();
     SpriteComponent mainCharacterSpriteComponent;
     float stateTime=0;
@@ -122,8 +124,9 @@ public class RenderSystem extends EntitySystem {
 
         sb.begin();
         sb.draw(currentFrame, centerX*getTileW(), centerY*getTileH());
-        touchpadComponent.touchpad.draw(sb, 0.5f);
         sb.end();
+        touchpadComponent.stage.act(Gdx.graphics.getDeltaTime());
+        touchpadComponent.stage.draw();
     }
 
 

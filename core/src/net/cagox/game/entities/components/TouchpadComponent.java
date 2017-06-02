@@ -3,6 +3,8 @@ package net.cagox.game.entities.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad.TouchpadStyle;
@@ -23,7 +25,8 @@ public class TouchpadComponent implements Component {
     private Drawable touchKnob;
     private TouchpadStyle touchpadStyle;
 
-
+    public Stage stage;
+    private SpriteBatch batch;
 
 
     /**
@@ -49,6 +52,12 @@ public class TouchpadComponent implements Component {
         touchpad = new Touchpad(10, touchpadStyle);
 
         touchpad.setBounds(10, 10, 128, 128);
+
+        stage = new Stage();
+        stage.addActor(touchpad);
+        //Gdx.input.setInputProcessor(stage);
+
+
     }
 
 }

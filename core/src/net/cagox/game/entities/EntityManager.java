@@ -3,6 +3,8 @@ package net.cagox.game.entities;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 
 import net.cagox.game.entities.components.TouchpadComponent;
 import net.cagox.game.entities.factories.CameraFactory;
@@ -33,15 +35,21 @@ public class EntityManager {
     public CameraFactory cameraFactory;
     public CharacterFactory characterFactory;
 
+    private InputMultiplexer inputMultiplexer;
+
 
 
 
     public EntityManager(Engine e) {
         this.engine = e;
+        inputMultiplexer = new InputMultiplexer();
+
 
         setUpFactories();
         addInitialEntities();
         setUpSystems();
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
 
         }
 
@@ -89,9 +97,20 @@ public class EntityManager {
         return cameraFactory;
     }
 
+    /**
+     * Method to create an Entity with a TouchpadComonent.
+     * <p>
+     * If the method starts to take on any level of complexity, I will move it to its own factory.
+     *
+     * @return Entity containing a TouchpadComponent
+     */
     private Entity getTouchpadEntity() {
         Entity entity = new Entity();
         entity.add(new TouchpadComponent());
         return entity;
+    }
+
+    public void addInputProcessor(InputProcessor processor) {
+        inputMultiplexer.addProcessor(processor);
     }
 }

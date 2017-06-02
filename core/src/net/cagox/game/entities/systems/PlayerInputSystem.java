@@ -44,7 +44,6 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
 
 
     public PlayerInputSystem(EntityManager entityManager) {
-        Gdx.input.setInputProcessor(this);
         this.entityManager = entityManager;
         pm = ComponentMapper.getFor(PositionComponent.class);
         pcm = ComponentMapper.getFor(PlayerCharacterComponent.class);
@@ -56,6 +55,8 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
     public void addedToEngine(Engine engine) {
         this.engine = engine;
         touchpadComponent = getTouchpadComponent();
+        entityManager.addInputProcessor(touchpadComponent.stage);
+        entityManager.addInputProcessor(this);
     }
 
     public void update(float deltaTime) {
@@ -64,7 +65,20 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
         PositionComponent playerPosition = playerCharacter.getComponent(PositionComponent.class);
         CameraComponent cameraComponent = cameraEntity.getComponent(CameraComponent.class);
 
+
         float speed = 3;
+
+        float x, y;
+        x = touchpadComponent.touchpad.getKnobPercentX()*speed*deltaTime;
+        y = touchpadComponent.touchpad.getKnobPercentY()*speed*deltaTime;
+
+        setPlayerDirection(x,y);
+        cameraComponent.camera.translate(x,y);
+
+        // blockSprite.setX(blockSprite.getX() + touchpad.getKnobPercentX()*blockSpeed);
+        //blockSprite.setY(blockSprite.getY() + touchpad.getKnobPercentY()*blockSpeed);
+
+
 
         //New Movement Code Bellow
         if (Moving.RIGHT) {
@@ -84,19 +98,7 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
             playerPosition.y -= speed * deltaTime * entityManager.getRenderSystem().getTileH();
             cameraComponent.camera.translate(0, -(speed * deltaTime));
         }
-
-        float x, y;
-        x = touchpadComponent.touchpad.getKnobPercentX();
-        y = touchpadComponent.touchpad.getKnobPercentY();
-
-        System.out.print("Knob X: ");
-        System.out.print(x);
-        System.out.print(", Knob Y: ");
-        System.out.print(y);
-        System.out.print("\n");
-
-
-
+        
     }
 
     @Override
@@ -123,8 +125,7 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {  //TODO:  Figure out how to do movement from touchDown.
-        Entity playerCharacter = engine.getEntitiesFor(Family.all(MainCharacterComponent.class).get()).first();
-        PositionComponent position = playerCharacter.getComponent(PositionComponent.class);
+        PositionComponent position = getPlayerPosition();
 
         RenderSystem renderSys = engine.getSystem(RenderSystem.class);
         Integer camMaxX = renderSys.mapWidth;  // - (int)renderSys.camera.viewportWidth/2;
@@ -236,7 +237,7 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
         return false;
     }
 
-    @Override
+     @Override
     public boolean scrolled(int amount) {
         return false;
     }
@@ -249,7 +250,58 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
         return tmpTpEntity.getComponent(TouchpadComponent.class);
     }
 
+    PositionComponent getPlayerPosition() {
+        Entity playerCharacter = engine.getEntitiesFor(Family.all(MainCharacterComponent.class).get()).first();
+        return playerCharacter.getComponent(PositionComponent.class);
+    }
 
+    void setPlayerDirection(float x, float y){
+        PositionComponent position = getPlayerPosition();
+        if(x > 0 && y > 0){
+            if(x>y) {
+                position.direction = "RIGHT";
+            }
+            else{
+                position.direction = "UP";
+            }
+            return;
+        }
+
+        if(x > 0 && y < 0){
+            if(x>y) {
+                position.direction = "RIGHT";
+            }
+            else{
+                position.direction = "DOWN";
+            }
+            return;
+
+        }
+        if(x < 0 && y < 0){
+            if(x<y) {
+                position.direction = "LEFT";
+            }
+            else{
+                position.direction = "DOWN";
+            }
+            return;
+
+        }
+
+        if(x < 0 && y > 0){
+            if(x<y) {
+                position.direction = "LEFT";
+            }
+            else{
+                position.direction = "UP";
+            }
+            return;
+
+        }
+
+
+
+    }
 
 }
 
