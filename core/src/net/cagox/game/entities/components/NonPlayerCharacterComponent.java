@@ -11,4 +11,12 @@ import com.badlogic.ashley.core.Component;
  */
 public class NonPlayerCharacterComponent implements Component {
     //TODO: Add elements needed to flesh out NPCs.  These may be other Components.
+    public String name;
+
+    public NonPlayerCharacterComponent() {}
+
+    public NonPlayerCharacterComponent(String name) {
+        this.name = name;
+    }
+
 }

@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 
 import net.cagox.game.entities.components.CharacterSheetComponent;
 import net.cagox.game.entities.components.MainCharacterComponent;
+import net.cagox.game.entities.components.NonPlayerCharacterComponent;
 import net.cagox.game.entities.components.PlayerCharacterComponent;
 import net.cagox.game.entities.components.PositionComponent;
 import net.cagox.game.entities.components.RenderableComponent;
@@ -53,6 +54,36 @@ public class CharacterFactory {
         //TODO:  Flesh out PlayerCharacterComponent constructors then update this method.
 
     }
+
+    /**
+     * Helper method to create normal NPCs that you might encounter around town.
+     * <p>
+     * This code will evolve as I flesh out just what an NPC looks like.
+     *
+     * @param imgFile
+     * @param spriteWidth
+     * @param spriteHeight
+     * @param frameDuration
+     * @return
+     */
+    public Entity createNpcCharacter(String name, String imgFile, int spriteWidth, int spriteHeight, float frameDuration) {
+        Entity entity = new Entity();
+        entity.add(createSpriteComponent(imgFile, spriteWidth, spriteHeight, frameDuration));
+        entity.add(new NonPlayerCharacterComponent(name));
+        entity.add(new RenderableComponent());
+        entity.add(new PositionComponent());
+
+        return entity;
+    }
+
+
+    public Entity createMerchantNPC(String name, String imgFile, int spriteWidth, int spriteHeight, float frameDuration) {
+        Entity entity = createNpcCharacter(name, imgFile, spriteWidth, spriteHeight, frameDuration);
+        entity.add(new MainCharacterComponent());
+
+        return entity;
+    }
+
 
 
     /**

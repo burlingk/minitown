@@ -1,0 +1,37 @@
+The following assets are from: http://ayene-chan.deviantart.com/
+    materials1.png
+    materials2.png
+    rpg_maker_vx___walls__do_it_yourself__by_ayene_chan-d62634b.png
+    rpg_maker_vx_ace___items_by_ayene_chan-davng1k.png
+    walls-n-roofs1.png
+    woodfloors.png
+    various.png
+    rpg_maker_vx_ace___windows_with_curtains_by_ayene_chan-d7qrpfw.png
+    pillars1.png
+She states on her page that her resources are free to use with credit.
+http://ayene-chan.deviantart.com/journal/Devious-Journal-Entry-392428308
+Go look at her page.  She has soem awesome stuff there!
+
+==========
+
+magecity_0.png:  One of the more important assets in the folder, comes from this page: https://opengameart.org/content/mage-city-arcanos
+
+It is CC0, and created by the user Hyptosis. 
+
+Go check out his stuff.  He has some other cool resources up too.
+
+
+==========
+
+barbarian.png is a slightly edited version of the sprite sheet from this page: https://opengameart.org/content/lpc-barbarian-sprite-base
+
+I just added pants.  It is licensed under he CC-BY-SA 3.0 license:
+http://creativecommons.org/licenses/by-sa/3.0/
+
+
+==========
+
+background.png (The slightly translucent green disk) and knob.png (grey circle) are created by myself, and you may use them for whatever you wish.  They are literally just something I threw together to test getting the Touchpad code workign.  So, those two files are available as CC0.
+
+
+

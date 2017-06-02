@@ -38,7 +38,6 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
     private Engine engine;
     private  EntityManager entityManager;
 
-    private MovementFlags Moving = new MovementFlags();
 
     private TouchpadComponent touchpadComponent;
 
@@ -80,6 +79,8 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
 
 
 
+
+        /**
         //New Movement Code Bellow
         if (Moving.RIGHT) {
             playerPosition.x += speed * deltaTime * entityManager.getRenderSystem().getTileW();
@@ -98,28 +99,50 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
             playerPosition.y -= speed * deltaTime * entityManager.getRenderSystem().getTileH();
             cameraComponent.camera.translate(0, -(speed * deltaTime));
         }
-        
+        **/
+
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                playerPosition.x -= speed * deltaTime * entityManager.getRenderSystem().getTileW();
+                cameraComponent.camera.translate(-(speed * deltaTime), 0);
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                playerPosition.x += speed * deltaTime * entityManager.getRenderSystem().getTileW();
+                cameraComponent.camera.translate((speed * deltaTime), 0);
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                playerPosition.y += speed * deltaTime * entityManager.getRenderSystem().getTileW();
+                cameraComponent.camera.translate(0, (speed * deltaTime));
+            }
+        }
+
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                playerPosition.y -= speed * deltaTime * entityManager.getRenderSystem().getTileW();
+                cameraComponent.camera.translate(0, -(speed * deltaTime));
+            }
+        }
+
+
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+               Gdx.app.exit();
+            }
+        }
+
+
+
     }
 
     @Override
     public boolean keyUp(int keycode) {
-
-        if(keycode == Input.Keys.LEFT) {
-            Moving.LEFT = false;
-        }
-
-        if(keycode == Input.Keys.RIGHT) {
-            Moving.RIGHT = false;
-        }
-
-        if(keycode == Input.Keys.UP) {
-            Moving.UP = false;
-        }
-
-        if(keycode == Input.Keys.DOWN) {
-            Moving.DOWN = false;
-        }
-
         return false;
     }
 
@@ -139,67 +162,23 @@ public class PlayerInputSystem extends EntitySystem implements InputProcessor {
 
         //TODO fix camera positioning code after testing.
         if(keycode == Input.Keys.LEFT) {
-            //pcWalkDirection = "LEFT";
-            //camera.translate(-1,0);
             position.direction = "LEFT";
-            if (position.x > 0) {
-                Moving.LEFT = true;
-            }
-            else {
-                Moving.LEFT = false;
-                position.x = 0;
-            }
         }
         if(keycode == Input.Keys.RIGHT) {
-            //pcWalkDirection = "RIGHT";
-            //camera.translate(1,0);
             position.direction = "RIGHT";
-            if (position.x < pcMaxX-1) {
-                Moving.RIGHT = true;
-            }
-            else {
-                Moving.RIGHT = false;
-                position.x = pcMaxX-1;
-            }
         }
         if(keycode == Input.Keys.UP) {
-            //pcWalkDirection = "UP";
-            //camera.translate(0, 1);
             position.direction = "UP";
-            if (position.y < pcMaxY-1) {
-                Moving.UP = true;
-            }
-            else {
-                Moving.UP = false;
-                position.y = pcMaxY-1;
-            }
         }
         if(keycode == Input.Keys.DOWN) {
-            //pcWalkDirection = "DOWN";
-           //camera.translate(0,-1);
             position.direction = "DOWN";
-            if (position.y > 0) {
-                Moving.DOWN = true;
-            }
-            else {
-                Moving.DOWN = false;
-                position.y = 0;
-            }
         }
-        if(keycode == Input.Keys.NUM_1)
-            //tiledMap.getLayers().get(0).setVisible(!tiledMap.getLayers().get(0).isVisible());
-        if(keycode == Input.Keys.NUM_2)
-            //tiledMap.getLayers().get(1).setVisible(!tiledMap.getLayers().get(1).isVisible());
-        if(keycode == Input.Keys.ESCAPE) {
-            Gdx.app.exit();
 
-        }
         return false;
     }
 
     @Override
     public boolean keyTyped(char character) {
-
         return false;
     }
 
